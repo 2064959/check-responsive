@@ -1,24 +1,35 @@
 #!/usr/bin/env node
 
 /**
- * Responsive UI Checker using Playwright
- * Automatically detects horizontal overflow and internal content overflow.
- *
- * Usage:
- *   node check-responsive.js [targetUrl]
- *
- * It will automatically try to find a running dev server or start it from package.json.
+ * Check-Responsive 🚀
+ * Flutter-style pixel-precise overflow detection.
+ * Automatically finds, starts, and waits for your dev server.
  */
 
 const { chromium } = require('@playwright/test');
 const { spawn } = require('child_process');
+const { program } = require('commander');
 const net = require('net');
 const fs = require('fs');
 const path = require('path');
+const pkg = require('./package.json');
 
-// Configuration
 const COMMON_PORTS = [5173, 3000, 5174, 8080, 3001, 4000, 5000];
 const START_COMMANDS = ['dev', 'start', 'serve'];
+
+program
+  .name('check-responsive')
+  .description('Automated pixel-precise overflow detection tool.')
+  .version(pkg.version)
+  .argument('[url]', 'Target URL to test (optional, will auto-detect dev servers if omitted)')
+  .option('-c, --crawl', 'Crawl the site to find multiple routes and test them all')
+  .option('-s, --subroutes', 'Restrict crawler to only scan sub-paths (kids) of the target URL')
+  .option('-d, --depth <number>', 'Maximum link depth for crawling', '10')
+  .option('-w, --wait <ms>', 'Additional delay (in ms) to wait for animations after load', '500')
+  .parse(process.argv);
+
+const options = program.opts();
+const positionalUrl = program.args[0];
 
 /**
  * Checks if a port is in use.
@@ -53,21 +64,20 @@ async function waitForPort(port, timeout = 30000) {
 }
 
 /**
- * Tries to detect which port the project is likely to use from package.json
+ * Detects potential port from package.json
  */
-function getPotentialPort(pkg) {
-  // Common patterns in scripts
-  const scripts = Object.values(pkg.scripts || {}).join(' ');
+function getPotentialPort(pkgObj) {
+  const scripts = Object.values(pkgObj.scripts || {}).join(' ');
   const portMatch = scripts.match(/--port (\d+)/);
   if (portMatch) return parseInt(portMatch[1]);
   return null;
 }
 
 (async () => {
-  let targetUrl = process.argv[2];
+  let targetUrl = positionalUrl;
   let devProcess = null;
 
-  // 1. If no URL provided, try to find an active one
+  // 1. Auto-Detection
   if (!targetUrl) {
     console.log(`\x1b[36m🔍 Searching for active development servers...\x1b[0m`);
     let activePort = null;
@@ -84,18 +94,17 @@ function getPotentialPort(pkg) {
     }
   }
 
-  // 2. If still no URL, try to start the project
+  // 2. Auto-Startup
   if (!targetUrl) {
     const pkgPath = path.join(process.cwd(), 'package.json');
     if (fs.existsSync(pkgPath)) {
-      const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
-      const scriptName = START_COMMANDS.find(s => pkg.scripts && pkg.scripts[s]);
+      const pkgObj = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
+      const scriptName = START_COMMANDS.find(s => pkgObj.scripts && pkgObj.scripts[s]);
 
       if (scriptName) {
-        const port = getPotentialPort(pkg) || COMMON_PORTS[0];
+        const port = getPotentialPort(pkgObj) || COMMON_PORTS[0];
         console.log(`\x1b[33m🚀 Starting dev server (npm run ${scriptName})...\x1b[0m`);
         
-        // Spawn the dev server
         devProcess = spawn('npm', ['run', scriptName], {
           stdio: 'inherit',
           shell: true
@@ -114,96 +123,213 @@ function getPotentialPort(pkg) {
     }
   }
 
-  // 3. Fallback
+  // 3. Final Check
   if (!targetUrl) {
     console.error(`\x1b[31m❌ Error:\x1b[0m No target URL provided and no local dev server found/started.`);
-    console.log(`Usage: node check-responsive.js [url]`);
-    process.exit(1);
+    program.help();
   }
 
-  console.log(`\x1b[36m🚀 Starting UI responsiveness check for:\x1b[0m \x1b[1m${targetUrl}\x1b[0m\n`);
+  targetUrl = targetUrl.replace(/\/$/, ''); // Normalize trailing slash
+  const baseUrl = new URL(targetUrl).origin;
 
-  // Launch the browser
+  console.log(`\x1b[36m🚀 Starting Flutter-style overflow check for:\x1b[0m \x1b[1m${targetUrl}\x1b[0m\n`);
+
+  // Launch Browser
   const browser = await chromium.launch();
-  const page = await browser.newPage();
+  const context = await browser.newContext();
+  const page = await context.newPage();
   
   const viewports = [
     { name: 'Mobile Portrait', width: 375, height: 667 },
+    { name: 'Mobile Landscape', width: 667, height: 375 },
     { name: 'Tablet Portrait', width: 768, height: 1024 },
-    { name: 'Desktop Small', width: 1024, height: 768 },
-    { name: 'Desktop Large', width: 1440, height: 900 }
+    { name: 'Tablet Landscape', width: 1024, height: 768 },
+    { name: 'Small Desktop', width: 1280, height: 800 },
+    { name: 'Large Desktop', width: 1440, height: 900 }
   ];
 
-  try {
-    for (const vp of viewports) {
-      await page.setViewportSize({ width: vp.width, height: vp.height });
-      
-      try {
-        await page.goto(targetUrl, { waitUntil: 'networkidle', timeout: 30000 });
-      } catch (err) {
-        console.error(`\x1b[31m❌ Error loading page at ${vp.name}:\x1b[0m ${err.message}`);
-        continue;
-      }
+  const queue = [{ url: targetUrl, depth: 0 }];
+  const visited = new Set();
+  const delayMs = parseInt(options.wait) || 0;
+  const maxDepth = options.crawl ? (parseInt(options.depth) || Infinity) : 0;
 
-      console.log(`\x1b[33m--- Checking ${vp.name} (${vp.width}x${vp.height}) ---\x1b[0m`);
+  while (queue.length > 0) {
+    const { url, depth } = queue.shift();
+    if (visited.has(url)) continue;
+    visited.add(url);
 
-      const issues = await page.evaluate(() => {
-        const flaggedElements = [];
-        const allElements = document.querySelectorAll('*');
+    console.log(`\x1b[45m\x1b[37m 🔗 TESTING PAGE: ${url} \x1b[0m`);
 
-        allElements.forEach(el => {
-          if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'TEMPLATE', 'IFRAME'].includes(el.tagName)) return;
-          
-          const style = window.getComputedStyle(el);
-          if (style.display === 'none' || style.visibility === 'hidden') return;
-
-          const rect = el.getBoundingClientRect();
-          const clientWidth = document.documentElement.clientWidth;
-          
-          if (rect.right > clientWidth + 1) {
-            flaggedElements.push({
-              element: `<${el.tagName.toLowerCase()}${el.id ? ' id="' + el.id + '"' : ''}${el.className ? ' class="' + el.className + '"' : ''}>`,
-              issue: 'Overflows screen horizontally',
-              width: rect.width,
-              rightEdge: rect.right,
-              screenWidth: clientWidth
+    for (let i = 0; i < viewports.length; i++) {
+        const vp = viewports[i];
+        await page.setViewportSize({ width: vp.width, height: vp.height });
+        
+        try {
+            await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+            
+            // Wait for fonts to load
+            await page.evaluate(async () => {
+              if (document.fonts) { await document.fonts.ready; }
             });
-          }
-
-          if (el.scrollWidth > el.clientWidth && !['scroll', 'auto'].includes(style.overflowX)) {
-            if (el.clientWidth > 0) {
-              flaggedElements.push({
-                element: `<${el.tagName.toLowerCase()}${el.id ? ' id="' + el.id + '"' : ''}${el.className ? ' class="' + el.className + '"' : ''}>`,
-                issue: 'Internal content overflowing container'
-              });
+            
+            if (delayMs > 0) {
+                await page.waitForTimeout(delayMs);
             }
-          }
+            
+            // On first viewport, extract internal links for queue
+            if ((options.crawl || options.subroutes) && i === 0 && depth < maxDepth) {
+                const links = await page.evaluate(() => {
+                    return Array.from(document.querySelectorAll('a'))
+                        .map(a => a.href)
+                        .filter(h => h.startsWith('http'));
+                });
+                
+                links.forEach(link => {
+                    try {
+                        const u = new URL(link);
+                        // Only follow same-origin links
+                        if (u.origin === baseUrl) {
+                            if (options.subroutes) {
+                                const targetPath = new URL(targetUrl).pathname;
+                                const isKid = u.pathname === targetPath || u.pathname.startsWith(targetPath === '/' ? '/' : targetPath + '/');
+                                if (!isKid) return;
+                            }
+                            
+                            u.hash = ''; // Remove hash
+                            const cleanUrl = u.href.replace(/\/$/, '');
+                            
+                            // Check if already visited or queued
+                            if (!visited.has(cleanUrl) && !queue.find(q => q.url === cleanUrl)) {
+                                queue.push({ url: cleanUrl, depth: depth + 1 });
+                            }
+                        }
+                    } catch (e) {
+                         // Ignore invalid URLs
+                    }
+                });
+            }
+        } catch (err) {
+            console.error(`\x1b[31m❌ Error loading page at ${vp.name}:\x1b[0m ${err.message}`);
+            continue;
+        }
+
+        console.log(`\x1b[90m-------------------------------------------------\x1b[0m`);
+        console.log(`\x1b[1m📱 ${vp.name} (${vp.width}x${vp.height})\x1b[0m`);
+        console.log(`\x1b[90m-------------------------------------------------\x1b[0m`);
+
+        const issues = await page.evaluate(() => {
+            const flagged = [];
+            const allElements = document.querySelectorAll('*');
+            const viewportWidth = document.documentElement.clientWidth;
+            const viewportHeight = document.documentElement.clientHeight;
+
+            // Helper to generate a readable CSS path with nth-of-type
+            const getElementPath = (el) => {
+                if (el.id) return `#${el.id}`;
+                let path = [];
+                let curr = el;
+                while (curr && curr.nodeType === Node.ELEMENT_NODE && curr.tagName !== 'HTML') {
+                    let selector = curr.tagName.toLowerCase();
+                    if (curr.className && typeof curr.className === 'string') {
+                        const classes = curr.className.trim().split(/\s+/).filter(c => c && !c.includes(':')).join('.');
+                        if (classes) selector += '.' + classes;
+                    }
+                    
+                    // Add nth-of-type for precision if sibling tags match
+                    let siblingIndex = 1;
+                    let sibling = curr.previousElementSibling;
+                    while (sibling) {
+                        if (sibling.tagName === curr.tagName) siblingIndex++;
+                        sibling = sibling.previousElementSibling;
+                    }
+                    if (siblingIndex > 1) {
+                         selector += `:nth-of-type(${siblingIndex})`;
+                    }
+
+                    path.unshift(selector);
+                    curr = curr.parentNode;
+                }
+                return path.join(' > ');
+            };
+
+            allElements.forEach(el => {
+                if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'HTML', 'BODY', 'META', 'HEAD', 'TITLE'].includes(el.tagName)) return;
+                
+                const style = window.getComputedStyle(el);
+                if (style.display === 'none' || style.visibility === 'hidden') return;
+
+                const rect = el.getBoundingClientRect();
+                
+                // 1. VIEWPORT OVERFLOW
+                if (rect.right > viewportWidth + 0.5) { 
+                    const overflowPx = Math.round(rect.right - viewportWidth);
+                    flagged.push({
+                        type: '⚠️ VIEWPORT OVERFLOW',
+                        message: `Element overflowed the right edge of the screen by ${overflowPx} pixels.`,
+                        element: getElementPath(el)
+                    });
+                }
+
+                if (rect.bottom > viewportHeight + 0.5 && style.position === 'fixed') {
+                    const overflowPx = Math.round(rect.bottom - viewportHeight);
+                    flagged.push({
+                        type: '⚠️ VIEWPORT OVERFLOW',
+                        message: `Fixed element overflowed the bottom edge of the screen by ${overflowPx} pixels.`,
+                        element: getElementPath(el)
+                    });
+                }
+
+                // 2. CONTAINER OVERFLOW
+                const isOverflowHidden = ['hidden', 'scroll', 'auto', 'clip'].includes(style.overflow) || ['hidden', 'scroll', 'auto', 'clip'].includes(style.overflowX);
+                
+                if (!isOverflowHidden) {
+                    if (el.scrollWidth > el.clientWidth + 0.5) {
+                        const overflowPx = Math.round(el.scrollWidth - el.clientWidth);
+                        flagged.push({
+                            type: '📦 CONTAINER OVERFLOW',
+                            message: `Content overflowed its container horizontally by ${overflowPx} pixels.`,
+                            element: getElementPath(el)
+                        });
+                    }
+
+                    if (el.scrollHeight > el.clientHeight + 0.5 && !['hidden', 'scroll', 'auto', 'clip'].includes(style.overflowY)) {
+                        const overflowPx = Math.round(el.scrollHeight - el.clientHeight);
+                        flagged.push({
+                            type: '📦 CONTAINER OVERFLOW',
+                            message: `Content overflowed its container vertically by ${overflowPx} pixels.`,
+                            element: getElementPath(el)
+                        });
+                    }
+                }
+            });
+
+            return flagged;
         });
 
-        return flaggedElements;
-      });
-
-      if (issues.length > 0) {
-        console.table(issues);
-      } else {
-        console.log('\x1b[32m✅ No overflow issues found at this size.\x1b[0m\n');
-      }
+        if (issues.length > 0) {
+            issues.forEach(issue => {
+                console.log(`\x1b[33m${issue.type}\x1b[0m`); // Yellow
+                console.log(`   Message : ${issue.message}`);
+                console.log(`   Element : \x1b[36m${issue.element}\x1b[0m\n`); // Cyan
+            });
+        } else {
+            console.log('\x1b[32m✅ No layout overflows detected.\x1b[0m\n');
+        }
     }
-  } finally {
-    await browser.close();
-    
-    // If we started a dev process, we might want to kill it, 
-    // but often users want to keep it running. 
-    // For automation, we'll keep it running if it was already there, 
-    // but maybe terminate if we started it just for this script.
-    // However, the user said "detect if running and if not start it", 
-    // implying they might want it for the test.
-    if (devProcess) {
-      console.log(`\x1b[33m🛑 Tests complete. You can close the dev server (npm run) manually or it will remain running.\x1b[0m`);
-      // We don't kill it here by default to let them see results or continue working,
-      // but if the script is for CI, we should kill it.
-      // Given the prompt, I'll exit and let them decide.
-      process.exit(0);
-    }
+    console.log('');
   }
+
+  await browser.close();
+  
+  if (devProcess) {
+    if (process.platform === 'win32') {
+        spawn('taskkill', ['/pid', devProcess.pid, '/f', '/t']);
+    } else {
+        devProcess.kill('SIGINT');
+    }
+    console.log(`\x1b[33m🛑 Tests complete. Dev server shut down.\x1b[0m`);
+  } else {
+    console.log(`\x1b[33m🛑 Tests complete.\x1b[0m`);
+  }
+  process.exit(0);
 })();

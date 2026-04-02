@@ -1,18 +1,30 @@
 {
   "name": "check-responsive",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "1.1.0",
+  "description": "Automated pixel-precise responsive UI and overflow testing tool using Playwright.",
+  "main": "check-responsive.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/check-responsive.git"
+  },
+  "keywords": [
+    "playwright",
+    "responsive",
+    "testing",
+    "css-overflow",
+    "layout-shift",
+    "automation"
+  ],
+  "author": "Ponom",
+  "license": "MIT",
   "bin": {
     "check-responsive": "check-responsive.js"
   },
   "dependencies": {
-    "@playwright/test": "^1.59.1"
+    "@playwright/test": "^1.59.1",
+    "commander": "^13.1.0"
   }
 }
