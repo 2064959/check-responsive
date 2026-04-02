@@ -74,8 +74,17 @@ function getPotentialPort(pkgObj) {
 }
 
 (async () => {
-  let targetUrl = positionalUrl;
+  let targetUrl = null;
+  let targetPath = '';
   let devProcess = null;
+
+  if (positionalUrl) {
+    if (positionalUrl.startsWith('http://') || positionalUrl.startsWith('https://')) {
+      targetUrl = positionalUrl;
+    } else {
+      targetPath = positionalUrl.startsWith('/') ? positionalUrl : '/' + positionalUrl;
+    }
+  }
 
   // 1. Auto-Detection
   if (!targetUrl) {
@@ -89,8 +98,8 @@ function getPotentialPort(pkgObj) {
     }
 
     if (activePort) {
-      targetUrl = `http://localhost:${activePort}`;
-      console.log(`\x1b[32m✅ Found running server at:\x1b[0m ${targetUrl}`);
+      targetUrl = `http://localhost:${activePort}${targetPath}`;
+      console.log(`\x1b[32m✅ Found running server at:\x1b[0m http://localhost:${activePort}`);
     }
   }
 
@@ -113,7 +122,7 @@ function getPotentialPort(pkgObj) {
         console.log(`\x1b[33m⏳ Waiting for localhost:${port} to be ready...\x1b[0m`);
         const ready = await waitForPort(port);
         if (ready) {
-          targetUrl = `http://localhost:${port}`;
+          targetUrl = `http://localhost:${port}${targetPath}`;
         } else {
           console.error(`\x1b[31m❌ Server failed to start on port ${port} within timeout.\x1b[0m`);
           devProcess.kill();
