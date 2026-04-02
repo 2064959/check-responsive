@@ -9,7 +9,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "bin": {
+    "check-responsive": "check-responsive.js"
+  },
+  "dependencies": {
     "@playwright/test": "^1.59.1"
   }
 }

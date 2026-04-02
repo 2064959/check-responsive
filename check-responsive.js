@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /**
  * Responsive UI Checker using Playwright
  * Automatically detects horizontal overflow and internal content overflow.
