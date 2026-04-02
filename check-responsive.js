@@ -12,10 +12,12 @@ const { program } = require('commander');
 const net = require('net');
 const fs = require('fs');
 const path = require('path');
+const readline = require('readline');
 const pkg = require('./package.json');
 
 const COMMON_PORTS = [5173, 3000, 5174, 8080, 3001, 4000, 5000];
 const START_COMMANDS = ['dev', 'start', 'serve'];
+const AUTH_STATE_FILE = path.join(process.cwd(), '.check-responsive-auth.json');
 
 program
   .name('check-responsive')
@@ -26,10 +28,53 @@ program
   .option('-s, --subroutes', 'Restrict crawler to only scan sub-paths (kids) of the target URL')
   .option('-d, --depth <number>', 'Maximum link depth for crawling', '10')
   .option('-w, --wait <ms>', 'Additional delay (in ms) to wait for animations after load', '500')
+  .option('-i, --interactive', 'Start in interactive UI mode to manually authenticate before scanning')
+  .option('-l, --login-path <string>', 'Custom URL path keyword that triggers the interactive login flow')
   .parse(process.argv);
 
 const options = program.opts();
 const positionalUrl = program.args[0];
+
+// Cleanup handler
+function cleanupAuth() {
+  if (fs.existsSync(AUTH_STATE_FILE)) {
+    try { fs.unlinkSync(AUTH_STATE_FILE); } catch(e) {}
+  }
+}
+process.on('SIGINT', () => {
+    cleanupAuth();
+    process.exit();
+});
+
+async function performInteractiveLogin(loginUrl) {
+    console.log(`\n\x1b[36m🚀 Launching interactive browser for authentication...\x1b[0m`);
+    const authBrowser = await chromium.launch({ headless: false });
+    let authContextArgs = {};
+    if (fs.existsSync(AUTH_STATE_FILE)) {
+        authContextArgs.storageState = AUTH_STATE_FILE;
+    }
+    const authContext = await authBrowser.newContext(authContextArgs);
+    const authPage = await authContext.newPage();
+    try {
+        await authPage.goto(loginUrl);
+    } catch(e) {}
+
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+    });
+
+    await new Promise(resolve => {
+        rl.question('\n\x1b[33m🔑 Log in using the opened window. When you have full access, press ENTER here to resume scanning...\x1b[0m\n', () => {
+            rl.close();
+            resolve();
+        });
+    });
+
+    await authContext.storageState({ path: AUTH_STATE_FILE });
+    await authBrowser.close();
+    console.log(`\x1b[32m✅ Session saved! Resuming background tests...\x1b[0m\n`);
+}
 
 /**
  * Checks if a port is in use.
@@ -143,10 +188,25 @@ function getPotentialPort(pkgObj) {
 
   console.log(`\x1b[36m🚀 Starting Flutter-style overflow check for:\x1b[0m \x1b[1m${targetUrl}\x1b[0m\n`);
 
-  // Launch Browser
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
+  // Interactive initial hook
+  if (options.interactive) {
+      await performInteractiveLogin(targetUrl);
+  }
+
+  // Launch Headless Browser function (re-usable for session reloading)
+  let browser, context, page;
+  async function initBrowser() {
+      if (browser) Object.assign({}, await browser.close()); // Ignore promise warning
+      browser = await chromium.launch();
+      let ctxArgs = {};
+      if (fs.existsSync(AUTH_STATE_FILE)) {
+          ctxArgs.storageState = AUTH_STATE_FILE;
+      }
+      context = await browser.newContext(ctxArgs);
+      page = await context.newPage();
+  }
+  
+  await initBrowser();
   
   const viewports = [
     { name: 'Mobile Portrait', width: 375, height: 667 },
@@ -169,6 +229,8 @@ function getPotentialPort(pkgObj) {
 
     console.log(`\x1b[45m\x1b[37m 🔗 TESTING PAGE: ${url} \x1b[0m`);
 
+    let needToRestartLoop = false;
+
     for (let i = 0; i < viewports.length; i++) {
         const vp = viewports[i];
         await page.setViewportSize({ width: vp.width, height: vp.height });
@@ -176,6 +238,28 @@ function getPotentialPort(pkgObj) {
         try {
             await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
             
+            // Login Detection Hand-off
+            const currentUrlPath = page.url().toLowerCase();
+            let needsAuth = false;
+            
+            if (options.loginPath && currentUrlPath.includes(options.loginPath.toLowerCase())) {
+                needsAuth = true;
+            } else if (!options.loginPath && (currentUrlPath.includes('login') || currentUrlPath.includes('signin') || currentUrlPath.includes('auth'))) {
+                needsAuth = true;
+            }
+            
+            if (needsAuth) {
+                console.log(`\x1b[33m🔒 Authentication wall detected at: ${page.url()}\x1b[0m`);
+                await performInteractiveLogin(page.url());
+                await initBrowser(); // Re-init with new state
+                
+                // Re-queue the original URL to try it again correctly
+                queue.unshift({ url, depth });
+                visited.delete(url);
+                needToRestartLoop = true;
+                break; // Break the viewports loop
+            }
+
             // Wait for fonts to load
             await page.evaluate(async () => {
               if (document.fonts) { await document.fonts.ready; }
@@ -219,7 +303,7 @@ function getPotentialPort(pkgObj) {
             }
         } catch (err) {
             console.error(`\x1b[31m❌ Error loading page at ${vp.name}:\x1b[0m ${err.message}`);
-            continue;
+            continue; // Go to next viewport
         }
 
         console.log(`\x1b[90m-------------------------------------------------\x1b[0m`);
@@ -325,7 +409,9 @@ function getPotentialPort(pkgObj) {
             console.log('\x1b[32m✅ No layout overflows detected.\x1b[0m\n');
         }
     }
-    console.log('');
+    
+    // If auth tripped, we don't console log the spacer, we already hit the first viewport break
+    if (!needToRestartLoop) console.log('');
   }
 
   await browser.close();
@@ -340,5 +426,7 @@ function getPotentialPort(pkgObj) {
   } else {
     console.log(`\x1b[33m🛑 Tests complete.\x1b[0m`);
   }
+  
+  cleanupAuth();
   process.exit(0);
 })();
