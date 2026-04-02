@@ -10,9 +10,12 @@ An automated pixel-precise responsive UI testing tool built with Playwright. Thi
 - **⏳ Robust Waiting**: Monitors the port to wait for the server, and automatically waits for web fonts (`document.fonts.ready`) and animations to settle before evaluating the layout.
 - **🎨 Expanded Viewport Support**: Tests everything from Mobile Portrait to Large Desktop (6 total viewports).
 - **🛡️ Noise Reduction & Precision**: Automatically filters out "ignore-able" overflows like off-canvas menus, marquees, and 2px sub-pixel rounding errors.
-- **🔐 Interactive Authentication**: Automatically detects when a test gets redirected to a login wall. Pauses the background scan, opens a visible browser for you to log in manually, saves your session tokens, and securely resumes the headless scan.
-- **🤖 AI Agent Synchronization**: Includes first-class support for AI coding agents with structured JSON output, non-interactive auth handling, and machine-readable CLI metadata.
-- **🧹 Clean Teardown**: Automatically shuts down any dev servers it spawned after testing completes.
+- **🚨 Severity Grouping**: Distinctly highlights **Critical** (viewport-breaking) vs **Warning** (container-only) issues.
+- **📸 Element Isolation**: Automatically captures cropped screenshots of every detected overflow (use `--screenshots`).
+- **✨ Decorative Buffers**: Use `data-check-ignore` or `--visual-buffer` to bypass cursive/decorative font flourishes.
+- **🔐 Interactive Authentication**: Automatically detects when a test gets redirected to login walls.
+- **🤖 AI Agent Synchronization**: First-class support for AI coding agents with JSON output and machine-readable metadata.
+- **🧹 Clean Teardown**: Automatically shuts down any dev servers it spawned.
 
 ## Installation
 
@@ -93,6 +96,30 @@ If your app uses constant polling (Stripe/Supabase), `networkidle` might hang. S
 check-responsive --timeout-strategy domcontentloaded --timeout 60000
 ```
 
+### ✨ Advanced Buffers & Decorative Noise
+
+For projects with heavy **cursive or decorative typography** (where a font's bounding box might be taller than its glyphs), use these tools:
+
+#### 1. Visual Buffer
+Ignore vertical overflows that are smaller than a specific pixel threshold:
+```bash
+check-responsive --visual-buffer 15
+```
+
+#### 2. The `data-check-ignore` Attribute
+Add this attribute to any element (or its parent) that you want the auditor to skip entirely. Perfect for decorative off-canvas menus or SVGs:
+```html
+<div class="glow-effect" data-check-ignore>...</div>
+```
+
+### 📸 Bug Reports & Screenshots
+
+Capture visual proof of every detected overflow to make fixing them faster:
+```bash
+check-responsive --screenshots
+```
+This will generate a `./responsive-report/screenshots/` folder containing cropped images of every failing element, labeled by page and viewport.
+
 ### 🤖 AI Agent Synchronization
 
 `check-responsive` is designed to be fully controllable by AI agents and automated pipelines. 
@@ -159,7 +186,6 @@ Options:
   -l, --login-path <string>  Custom URL path keyword that triggers the interactive login flow
   -e, --exclude <selectors>  Comma-separated CSS selectors to ignore
   -t, --tolerance <number>  Overflow tolerance in pixels (default: "2.0")
-  --timeout-strategy <str>   Navigation wait strategy (load, domcontentloaded, networkidle) (default: "networkidle")
   --timeout <number>         Navigation timeout in milliseconds (default: "30000")
   -p, --persist-auth         Keep the authentication state file between runs
   --json                     Output results as machine-readable JSON
@@ -168,6 +194,9 @@ Options:
   --auth-cookie <string>     Inject a session cookie (e.g., "name=value")
   --auth-file <path>         Use a custom Playwright storageState JSON file
   --ai-help                  Output structured JSON metadata for AI agents to understand CLI capabilities
+  --screenshots              Capture element-level screenshots of all detected overflows
+  --visual-buffer <number>   Vertical overflow buffer in pixels (default: 0)
+  --persist-reports          Keep the responsive-report folder between runs
   -h, --help                 display help for command
 ```
 

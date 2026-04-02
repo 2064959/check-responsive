@@ -1,0 +1,914 @@
+<html lang="en"><head><base href="http://localhost:3000/stress-test">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check-Responsive GAUNTLET (100+ Tests)</title>
+    <style>
+        body { font-family: system-ui, sans-serif; padding: 20px; line-height: 1.5; }
+        .test-case { border: 2px solid #eee; margin-bottom: 40px; padding: 20px; position: relative; }
+        .test-case h3 { margin-top: 0; color: #333; }
+        .test-case .note { font-size: 0.8rem; color: #666; margin-bottom: 10px; }
+        .container { background: #f9f9f9; border: 1px dashed #ccc; padding: 10px; }
+        .critical-marker { position: absolute; top: 10px; right: 10px; font-size: 1.5rem; }
+    </style>
+<style id="check-responsive-frozen-styles">body { font-family: system-ui, sans-serif; padding: 20px; line-height: 1.5; }
+.test-case { border: 2px solid rgb(238, 238, 238); margin-bottom: 40px; padding: 20px; position: relative; }
+.test-case h3 { margin-top: 0px; color: rgb(51, 51, 51); }
+.test-case .note { font-size: 0.8rem; color: rgb(102, 102, 102); margin-bottom: 10px; }
+.container { background: rgb(249, 249, 249); border: 1px dashed rgb(204, 204, 204); padding: 10px; }
+.critical-marker { position: absolute; top: 10px; right: 10px; font-size: 1.5rem; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }
+</style></head>
+<body>
+    <h1>Check-Responsive Stress Test: THE GAUNTLET</h1>
+    <p>110 scenarios designed to break layout detection logic.</p>
+<h2>Category: Flexbox Chaos</h2>
+        <div class="test-case" id="flex-no-shrink">
+            <h3>Test: flex-no-shrink</h3>
+            <p class="note">Expected Issue: Flex parent without flex-shrink on child</p>
+            <div class="container" style="display: flex;">
+                <div style="width: 150vw;">Wide Content</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-min-width-0">
+            <h3>Test: flex-min-width-0</h3>
+            <p class="note">Expected Issue: Flex child with large min-width</p>
+            <div class="container" style="display: flex; width: 100%;">
+                <div style="min-width: 500px;">Fixed Child</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-nested-overflow">
+            <h3>Test: flex-nested-overflow</h3>
+            <p class="note">Expected Issue: Nested flex overflow</p>
+            <div class="container" style="display: flex;">
+                <div style="display: flex;"><div style="width: 200vw;">Deep Overflow</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-nested-overflow-var-srbbxi">
+            <h3>Test: flex-nested-overflow-var-srbbxi</h3>
+            <p class="note">Expected Issue: Nested flex overflow (Variation)</p>
+            <div class="container" style="display: flex;">
+                <div style="display: flex;"><div style="width: 200vw;">Deep Overflow</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-nested-overflow-var-srbbxi-var-0z31wl">
+            <h3>Test: flex-nested-overflow-var-srbbxi-var-0z31wl</h3>
+            <p class="note">Expected Issue: Nested flex overflow (Variation) (Variation)</p>
+            <div class="container" style="display: flex;">
+                <div style="display: flex;"><div style="width: 200vw;">Deep Overflow</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-min-width-0-var-kbgkc">
+            <h3>Test: flex-min-width-0-var-kbgkc</h3>
+            <p class="note">Expected Issue: Flex child with large min-width (Variation)</p>
+            <div class="container" style="display: flex; width: 100%;">
+                <div style="min-width: 500px;">Fixed Child</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-min-width-0-var-to9my">
+            <h3>Test: flex-min-width-0-var-to9my</h3>
+            <p class="note">Expected Issue: Flex child with large min-width (Variation)</p>
+            <div class="container" style="display: flex; width: 100%;">
+                <div style="min-width: 500px;">Fixed Child</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-min-width-0-var-kbgkc-var-mn00uq">
+            <h3>Test: flex-min-width-0-var-kbgkc-var-mn00uq</h3>
+            <p class="note">Expected Issue: Flex child with large min-width (Variation) (Variation)</p>
+            <div class="container" style="display: flex; width: 100%;">
+                <div style="min-width: 500px;">Fixed Child</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-min-width-0-var-to9my-var-6liu3">
+            <h3>Test: flex-min-width-0-var-to9my-var-6liu3</h3>
+            <p class="note">Expected Issue: Flex child with large min-width (Variation) (Variation)</p>
+            <div class="container" style="display: flex; width: 100%;">
+                <div style="min-width: 500px;">Fixed Child</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-min-width-0-var-to9my-var-6liu3-var-rjb8qx">
+            <h3>Test: flex-min-width-0-var-to9my-var-6liu3-var-rjb8qx</h3>
+            <p class="note">Expected Issue: Flex child with large min-width (Variation) (Variation) (Variation)</p>
+            <div class="container" style="display: flex; width: 100%;">
+                <div style="min-width: 500px;">Fixed Child</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-min-width-0-var-to9my-var-6liu3-var-rjb8qx-var-hl61js">
+            <h3>Test: flex-min-width-0-var-to9my-var-6liu3-var-rjb8qx-var-hl61js</h3>
+            <p class="note">Expected Issue: Flex child with large min-width (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="display: flex; width: 100%;">
+                <div style="min-width: 500px;">Fixed Child</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="flex-min-width-0-var-vvgotl">
+            <h3>Test: flex-min-width-0-var-vvgotl</h3>
+            <p class="note">Expected Issue: Flex child with large min-width (Variation)</p>
+            <div class="container" style="display: flex; width: 100%;">
+                <div style="min-width: 500px;">Fixed Child</div>
+            </div>
+        </div>
+        <h2>Category: Grid Nightmares</h2>
+        <div class="test-case" id="grid-fixed-col">
+            <h3>Test: grid-fixed-col</h3>
+            <p class="note">Expected Issue: Grid with fixed column wider than mobile viewport</p>
+            <div class="container" style="display: grid; grid-template-columns: 500px 1fr;">
+                <div>Col 1</div><div>Col 2</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow">
+            <h3>Test: grid-gap-overflow</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-6uqmz">
+            <h3>Test: grid-gap-overflow-var-6uqmz</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-fixed-col-var-p49e9n">
+            <h3>Test: grid-fixed-col-var-p49e9n</h3>
+            <p class="note">Expected Issue: Grid with fixed column wider than mobile viewport (Variation)</p>
+            <div class="container" style="display: grid; grid-template-columns: 500px 1fr;">
+                <div>Col 1</div><div>Col 2</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-fixed-col-var-13ywbc">
+            <h3>Test: grid-fixed-col-var-13ywbc</h3>
+            <p class="note">Expected Issue: Grid with fixed column wider than mobile viewport (Variation)</p>
+            <div class="container" style="display: grid; grid-template-columns: 500px 1fr;">
+                <div>Col 1</div><div>Col 2</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-u65paj">
+            <h3>Test: grid-gap-overflow-var-u65paj</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-6uqmz-var-2gzar">
+            <h3>Test: grid-gap-overflow-var-6uqmz-var-2gzar</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-vvmtqi">
+            <h3>Test: grid-gap-overflow-var-vvmtqi</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-tipdoq">
+            <h3>Test: grid-gap-overflow-var-tipdoq</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-vvmtqi-var-ecf6wf">
+            <h3>Test: grid-gap-overflow-var-vvmtqi-var-ecf6wf</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-u65paj-var-rw119d">
+            <h3>Test: grid-gap-overflow-var-u65paj-var-rw119d</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-fixed-col-var-13ywbc-var-rzh7st">
+            <h3>Test: grid-fixed-col-var-13ywbc-var-rzh7st</h3>
+            <p class="note">Expected Issue: Grid with fixed column wider than mobile viewport (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-template-columns: 500px 1fr;">
+                <div>Col 1</div><div>Col 2</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-u65paj-var-rw119d-var-hvlnsn">
+            <h3>Test: grid-gap-overflow-var-u65paj-var-rw119d-var-hvlnsn</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation) (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-fixed-col-var-ikqz0p">
+            <h3>Test: grid-fixed-col-var-ikqz0p</h3>
+            <p class="note">Expected Issue: Grid with fixed column wider than mobile viewport (Variation)</p>
+            <div class="container" style="display: grid; grid-template-columns: 500px 1fr;">
+                <div>Col 1</div><div>Col 2</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-u65paj-var-7e0t5">
+            <h3>Test: grid-gap-overflow-var-u65paj-var-7e0t5</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-u65paj-var-rw119d-var-0jw1gy">
+            <h3>Test: grid-gap-overflow-var-u65paj-var-rw119d-var-0jw1gy</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation) (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-vvmtqi-var-qx1fd">
+            <h3>Test: grid-gap-overflow-var-vvmtqi-var-qx1fd</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="grid-gap-overflow-var-u65paj-var-rw119d-var-0jw1gy-var-4s5tdb">
+            <h3>Test: grid-gap-overflow-var-u65paj-var-rw119d-var-0jw1gy-var-4s5tdb</h3>
+            <p class="note">Expected Issue: Grid gap pushing content out (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="display: grid; grid-gap: 50vw; grid-template-columns: 1fr 1fr;">
+                <div>A</div><div>B</div>
+            </div>
+        </div>
+        <h2>Category: Transform Puzzles</h2>
+        <div class="test-case" id="transform-scale">
+            <h3>Test: transform-scale</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-translate">
+            <h3>Test: transform-translate</h3>
+            <p class="note">Expected Issue: Translating content past right edge</p>
+            <div class="container" style="width: 50%; transform: translateX(120%);">
+                Translated Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-rotate">
+            <h3>Test: transform-rotate</h3>
+            <p class="note">Expected Issue: Rotation causing diagonal overflow</p>
+            <div class="container" style="width: 100px; height: 100px; transform: rotate(45deg);">
+                Rotated Square
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-r66a3p">
+            <h3>Test: transform-scale-var-r66a3p</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-rotate-var-3w85ba">
+            <h3>Test: transform-rotate-var-3w85ba</h3>
+            <p class="note">Expected Issue: Rotation causing diagonal overflow (Variation)</p>
+            <div class="container" style="width: 100px; height: 100px; transform: rotate(45deg);">
+                Rotated Square
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-x7m7ji">
+            <h3>Test: transform-scale-var-x7m7ji</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-rotate-var-65czce">
+            <h3>Test: transform-rotate-var-65czce</h3>
+            <p class="note">Expected Issue: Rotation causing diagonal overflow (Variation)</p>
+            <div class="container" style="width: 100px; height: 100px; transform: rotate(45deg);">
+                Rotated Square
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-x7m7ji-var-p311rf">
+            <h3>Test: transform-scale-var-x7m7ji-var-p311rf</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-x7m7ji-var-z9ri0q">
+            <h3>Test: transform-scale-var-x7m7ji-var-z9ri0q</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-rotate-var-3w85ba-var-xn9n57">
+            <h3>Test: transform-rotate-var-3w85ba-var-xn9n57</h3>
+            <p class="note">Expected Issue: Rotation causing diagonal overflow (Variation) (Variation)</p>
+            <div class="container" style="width: 100px; height: 100px; transform: rotate(45deg);">
+                Rotated Square
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-x7m7ji-var-p311rf-var-73zt09">
+            <h3>Test: transform-scale-var-x7m7ji-var-p311rf-var-73zt09</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-rotate-var-az83zh">
+            <h3>Test: transform-rotate-var-az83zh</h3>
+            <p class="note">Expected Issue: Rotation causing diagonal overflow (Variation)</p>
+            <div class="container" style="width: 100px; height: 100px; transform: rotate(45deg);">
+                Rotated Square
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-x7m7ji-var-z9ri0q-var-izqe1d">
+            <h3>Test: transform-scale-var-x7m7ji-var-z9ri0q-var-izqe1d</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-cu1yf1">
+            <h3>Test: transform-scale-var-cu1yf1</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-x7m7ji-var-ojcvdb">
+            <h3>Test: transform-scale-var-x7m7ji-var-ojcvdb</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-rotate-var-lpwwxc">
+            <h3>Test: transform-rotate-var-lpwwxc</h3>
+            <p class="note">Expected Issue: Rotation causing diagonal overflow (Variation)</p>
+            <div class="container" style="width: 100px; height: 100px; transform: rotate(45deg);">
+                Rotated Square
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-174ok8">
+            <h3>Test: transform-scale-var-174ok8</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-rotate-var-3w85ba-var-xn9n57-var-qkzyeo">
+            <h3>Test: transform-rotate-var-3w85ba-var-xn9n57-var-qkzyeo</h3>
+            <p class="note">Expected Issue: Rotation causing diagonal overflow (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100px; height: 100px; transform: rotate(45deg);">
+                Rotated Square
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-scale-var-x7m7ji-var-p311rf-var-wtauok">
+            <h3>Test: transform-scale-var-x7m7ji-var-p311rf-var-wtauok</h3>
+            <p class="note">Expected Issue: Scaling width 100% past viewport (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; transform: scale(1.5); transform-origin: top left;">
+                Scaled Content
+            </div>
+        </div>
+        
+        <div class="test-case" id="transform-translate-var-ljv2t">
+            <h3>Test: transform-translate-var-ljv2t</h3>
+            <p class="note">Expected Issue: Translating content past right edge (Variation)</p>
+            <div class="container" style="width: 50%; transform: translateX(120%);">
+                Translated Content
+            </div>
+        </div>
+        <h2>Category: Typographic Horrors</h2>
+        <div class="test-case" id="text-nowrap">
+            <h3>Test: text-nowrap</h3>
+            <p class="note">Expected Issue: white-space: nowrap on long string</p>
+            <div class="container" style="white-space: nowrap;">
+                This text is very long and will not wrap under any circumstances even on mobile viewports.
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word">
+            <h3>Test: text-long-word</h3>
+            <p class="note">Expected Issue: Long word in narrow container</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word-var-ev9v9">
+            <h3>Test: text-long-word-var-ev9v9</h3>
+            <p class="note">Expected Issue: Long word in narrow container (Variation)</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word-var-ev9v9-var-cwz3rp">
+            <h3>Test: text-long-word-var-ev9v9-var-cwz3rp</h3>
+            <p class="note">Expected Issue: Long word in narrow container (Variation) (Variation)</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-nowrap-var-uzki7s">
+            <h3>Test: text-nowrap-var-uzki7s</h3>
+            <p class="note">Expected Issue: white-space: nowrap on long string (Variation)</p>
+            <div class="container" style="white-space: nowrap;">
+                This text is very long and will not wrap under any circumstances even on mobile viewports.
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word-var-fu0nb4">
+            <h3>Test: text-long-word-var-fu0nb4</h3>
+            <p class="note">Expected Issue: Long word in narrow container (Variation)</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word-var-3ufepq">
+            <h3>Test: text-long-word-var-3ufepq</h3>
+            <p class="note">Expected Issue: Long word in narrow container (Variation)</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word-var-ev9v9-var-sqc6db">
+            <h3>Test: text-long-word-var-ev9v9-var-sqc6db</h3>
+            <p class="note">Expected Issue: Long word in narrow container (Variation) (Variation)</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-nowrap-var-uzki7s-var-ttfp9n">
+            <h3>Test: text-nowrap-var-uzki7s-var-ttfp9n</h3>
+            <p class="note">Expected Issue: white-space: nowrap on long string (Variation) (Variation)</p>
+            <div class="container" style="white-space: nowrap;">
+                This text is very long and will not wrap under any circumstances even on mobile viewports.
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word-var-88f4c">
+            <h3>Test: text-long-word-var-88f4c</h3>
+            <p class="note">Expected Issue: Long word in narrow container (Variation)</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-nowrap-var-uzki7s-var-ttfp9n-var-lmkk2d">
+            <h3>Test: text-nowrap-var-uzki7s-var-ttfp9n-var-lmkk2d</h3>
+            <p class="note">Expected Issue: white-space: nowrap on long string (Variation) (Variation) (Variation)</p>
+            <div class="container" style="white-space: nowrap;">
+                This text is very long and will not wrap under any circumstances even on mobile viewports.
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word-var-fu0nb4-var-qpwba8">
+            <h3>Test: text-long-word-var-fu0nb4-var-qpwba8</h3>
+            <p class="note">Expected Issue: Long word in narrow container (Variation) (Variation)</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-long-word-var-ev9v9-var-cwz3rp-var-x4qn77">
+            <h3>Test: text-long-word-var-ev9v9-var-cwz3rp-var-x4qn77</h3>
+            <p class="note">Expected Issue: Long word in narrow container (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100px;">
+                SupercalifragilisticexpialidociousLongWordThatDoesntBreak
+            </div>
+        </div>
+        
+        <div class="test-case" id="text-nowrap-var-uzki7s-var-ttfp9n-var-0qsthb">
+            <h3>Test: text-nowrap-var-uzki7s-var-ttfp9n-var-0qsthb</h3>
+            <p class="note">Expected Issue: white-space: nowrap on long string (Variation) (Variation) (Variation)</p>
+            <div class="container" style="white-space: nowrap;">
+                This text is very long and will not wrap under any circumstances even on mobile viewports.
+            </div>
+        </div>
+        <h2>Category: Positioning Paradoxes</h2>
+        <div class="test-case" id="pos-abs-right">
+            <h3>Test: pos-abs-right</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-fixed-bottom">
+            <h3>Test: pos-fixed-bottom</h3>
+            <p class="note">Expected Issue: Fixed element partially off-screen at bottom</p>
+            <div class="container" style="">
+                <div style="position: fixed; bottom: -20px; height: 50px; width: 100%;">Fixed Bottom</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-abs-right-var-b38jxf">
+            <h3>Test: pos-abs-right-var-b38jxf</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge (Variation)</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-abs-right-var-b38jxf-var-7k0ec">
+            <h3>Test: pos-abs-right-var-b38jxf-var-7k0ec</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge (Variation) (Variation)</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-abs-right-var-b38jxf-var-7k0ec-var-v225wr">
+            <h3>Test: pos-abs-right-var-b38jxf-var-7k0ec-var-v225wr</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge (Variation) (Variation) (Variation)</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-abs-right-var-f5kmp">
+            <h3>Test: pos-abs-right-var-f5kmp</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge (Variation)</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-abs-right-var-b38jxf-var-7k0ec-var-v225wr-var-yvv46q">
+            <h3>Test: pos-abs-right-var-b38jxf-var-7k0ec-var-v225wr-var-yvv46q</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-abs-right-var-b38jxf-var-7k0ec-var-7j4sgl">
+            <h3>Test: pos-abs-right-var-b38jxf-var-7k0ec-var-7j4sgl</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge (Variation) (Variation) (Variation)</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-abs-right-var-f5kmp-var-lefx7k">
+            <h3>Test: pos-abs-right-var-f5kmp-var-lefx7k</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge (Variation) (Variation)</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="pos-abs-right-var-b38jxf-var-7k0ec-var-vwwu3">
+            <h3>Test: pos-abs-right-var-b38jxf-var-7k0ec-var-vwwu3</h3>
+            <p class="note">Expected Issue: Absolute positioned outside right edge (Variation) (Variation) (Variation)</p>
+            <div class="container" style="position: relative; width: 100%;">
+                <div style="position: absolute; right: -50px; width: 100px;">Absolute</div>
+            </div>
+        </div>
+        <h2>Category: Negative Space</h2>
+        <div class="test-case" id="margin-neg-right">
+            <h3>Test: margin-neg-right</h3>
+            <p class="note">Expected Issue: Negative margin-right</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-left">
+            <h3>Test: margin-neg-left</h3>
+            <p class="note">Expected Issue: Negative margin-left</p>
+            <div class="container" style="width: 100%; margin-left: -50px;">
+                Negative Left
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo">
+            <h3>Test: margin-neg-right-var-puv5wo</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-io7nr">
+            <h3>Test: margin-neg-right-var-puv5wo-var-io7nr</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-e9c49v">
+            <h3>Test: margin-neg-right-var-puv5wo-var-e9c49v</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-agxwf">
+            <h3>Test: margin-neg-right-var-puv5wo-var-agxwf</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-agxwf-var-iemlut">
+            <h3>Test: margin-neg-right-var-puv5wo-var-agxwf-var-iemlut</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-agxwf-var-c9k0mhq">
+            <h3>Test: margin-neg-right-var-puv5wo-var-agxwf-var-c9k0mhq</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-left-var-oo515">
+            <h3>Test: margin-neg-left-var-oo515</h3>
+            <p class="note">Expected Issue: Negative margin-left (Variation)</p>
+            <div class="container" style="width: 100%; margin-left: -50px;">
+                Negative Left
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-agxwf-var-c9k0mhq-var-r7u11i">
+            <h3>Test: margin-neg-right-var-puv5wo-var-agxwf-var-c9k0mhq-var-r7u11i</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-agxwf-var-c9k0mhq-var-7x93m">
+            <h3>Test: margin-neg-right-var-puv5wo-var-agxwf-var-c9k0mhq-var-7x93m</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-left-var-xm562p">
+            <h3>Test: margin-neg-left-var-xm562p</h3>
+            <p class="note">Expected Issue: Negative margin-left (Variation)</p>
+            <div class="container" style="width: 100%; margin-left: -50px;">
+                Negative Left
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-agxwf-var-c9k0mhq-var-r7u11i-var-wvwk7m">
+            <h3>Test: margin-neg-right-var-puv5wo-var-agxwf-var-c9k0mhq-var-r7u11i-var-wvwk7m</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        
+        <div class="test-case" id="margin-neg-right-var-puv5wo-var-agxwf-var-0eor2m">
+            <h3>Test: margin-neg-right-var-puv5wo-var-agxwf-var-0eor2m</h3>
+            <p class="note">Expected Issue: Negative margin-right (Variation) (Variation) (Variation)</p>
+            <div class="container" style="width: 100%; margin-right: -50px;">
+                Negative Margin
+            </div>
+        </div>
+        <h2>Category: Pseudo-element Sabotage</h2>
+        <div class="test-case" id="pseudo-after-width">
+            <h3>Test: pseudo-after-width</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-jn0waw">
+            <h3>Test: pseudo-after-width-var-jn0waw</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-jn0waw-var-q66et">
+            <h3>Test: pseudo-after-width-var-jn0waw-var-q66et</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation) (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-hlpf6r">
+            <h3>Test: pseudo-after-width-var-hlpf6r</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-jn0waw-var-q66et-var-feudkj">
+            <h3>Test: pseudo-after-width-var-jn0waw-var-q66et-var-feudkj</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation) (Variation) (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-n749vyq">
+            <h3>Test: pseudo-after-width-var-n749vyq</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-hlpf6r-var-awwsrk">
+            <h3>Test: pseudo-after-width-var-hlpf6r-var-awwsrk</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation) (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-hlpf6r-var-xg2fm">
+            <h3>Test: pseudo-after-width-var-hlpf6r-var-xg2fm</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation) (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-sufvm">
+            <h3>Test: pseudo-after-width-var-sufvm</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-sufvm-var-whtvvk">
+            <h3>Test: pseudo-after-width-var-sufvm-var-whtvvk</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation) (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        
+        <div class="test-case" id="pseudo-after-width-var-jn0waw-var-5s15h">
+            <h3>Test: pseudo-after-width-var-jn0waw-var-5s15h</h3>
+            <p class="note">Expected Issue: Pseudo-element with 200vw width (Variation) (Variation)</p>
+            <div class="container" style="position: relative;">
+                <style>#pseudo-after-width::after { content: ""; position: absolute; width: 200vw; height: 10px; background: red; }</style>Has Pseudo
+            </div>
+        </div>
+        <h2>Category: Z-index &amp; Clipping</h2>
+        <div class="test-case" id="clip-nested-hidden">
+            <h3>Test: clip-nested-hidden</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06">
+            <h3>Test: clip-nested-hidden-var-svky06</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-g5rrr">
+            <h3>Test: clip-nested-hidden-var-svky06-var-g5rrr</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-28rzjw">
+            <h3>Test: clip-nested-hidden-var-svky06-var-28rzjw</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-g5rrr-var-fso0o">
+            <h3>Test: clip-nested-hidden-var-svky06-var-g5rrr-var-fso0o</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-3rv2hl">
+            <h3>Test: clip-nested-hidden-var-svky06-var-3rv2hl</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-g5rrr-var-fso0o-var-fj8spl">
+            <h3>Test: clip-nested-hidden-var-svky06-var-g5rrr-var-fso0o-var-fj8spl</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-g5rrr-var-r4011">
+            <h3>Test: clip-nested-hidden-var-svky06-var-g5rrr-var-r4011</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-g5rrr-var-r4011-var-j71xt">
+            <h3>Test: clip-nested-hidden-var-svky06-var-g5rrr-var-r4011-var-j71xt</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-g5rrr-var-r4011-var-oqgzoy">
+            <h3>Test: clip-nested-hidden-var-svky06-var-g5rrr-var-r4011-var-oqgzoy</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        
+        <div class="test-case" id="clip-nested-hidden-var-svky06-var-g5rrr-var-fso0o-var-fj8spl-var-j2wj3x">
+            <h3>Test: clip-nested-hidden-var-svky06-var-g5rrr-var-fso0o-var-fj8spl-var-j2wj3x</h3>
+            <p class="note">Expected Issue: Overflow hidden on grandparent but visible intermediate (Variation) (Variation) (Variation) (Variation) (Variation)</p>
+            <div class="container" style="overflow: hidden; width: 100px;">
+                <div style="width: 200px;"><div style="overflow: visible; width: 300px;">Nested</div></div>
+            </div>
+        </div>
+        </body></html>
